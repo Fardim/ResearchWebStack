@@ -15,25 +15,25 @@ namespace ResearchWebStack.CommandLine
         {
            
         }
-        public static string[] CreateFiveCommandLineAsync(Options options)
+        public static string[] CreateFiveCommandLineAsync(Options options, Tuple<string, int> filterTuple)
         {
-            var result = CreateCommandLineProcess(options);
+            var result = CreateCommandLineProcess(options, filterTuple);
             //Parallel.For(0, 5, i => {  });
             //await Task.Delay(10);
             return result;
         }
-        public static string[] CreateFiveCommandLineNonAsync(Options options)
+        public static string[] CreateFiveCommandLineNonAsync(Options options, Tuple<string, int> filterTuple)
         {
             //var allResults = results.Select(re =>
             //{
             //    LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(re));
             //    return Newtonsoft.Json.JsonConvert.SerializeObject(re);
             //}).ToArray();
-            var result = CreateCommandLineProcess(options);
+            var result = CreateCommandLineProcess(options, filterTuple);
             return result;
         }
 
-        public static  string[] CreateCommandLineProcess(Options options)
+        public static  string[] CreateCommandLineProcess(Options options, Tuple<string, int> filterTuple)
         {
             var result = new string[] { };
             try
@@ -51,7 +51,7 @@ namespace ResearchWebStack.CommandLine
                 }
                 else if (options.Arguments == "getInfo")
                 {
-                    var result1 = UnitTestResults.GetInfo(testRun);
+                    var result1 = UnitTestResults.GetInfo(testRun, filterTuple.Item1, filterTuple.Item2);
                     List<string> list = new List<string>();
                     foreach (var list1 in result1)
                     {

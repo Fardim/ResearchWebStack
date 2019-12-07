@@ -22,7 +22,7 @@ namespace ResearchWebStack.DataModel
             xmlInputData = File.ReadAllText(path);
 
             TestRun testRun = ser.Deserialize<TestRun>(xmlInputData);
-            LogHelper.QInfo("Successfully parsed data from xml file.");
+            //LogHelper.QInfo("Successfully parsed data from xml file.");
             return testRun;
         }
     }

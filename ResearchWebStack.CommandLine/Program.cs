@@ -19,6 +19,12 @@ namespace ResearchWebStack.CommandLine
             LogHelper.GetConfiguredLog4Net(configFilePath);
             LogHelper.InjectLog4NetLogger(Log);
 
+            List<Tuple<string, int>> filterTuples = new List<Tuple<string, int>>();
+            filterTuples.Add(new Tuple<string, int>("FireIfDeactivating_When_Call_Result(False,0,Inactive,False,0,null,Inactive,null)", 0));
+            filterTuples.Add(new Tuple<string, int>("CreateParameter_When_Call_Result(False,0,null,null)", 1));
+            filterTuples.Add(new Tuple<string, int>("Scope_Get_WhenCalled_ShouldReturnExpectedValue(User,User)", 2));
+            filterTuples.Add(new Tuple<string, int>("CryptographyService_Set_WhenCalled_ShouldNotThrowException", 0));
+            filterTuples.Add(new Tuple<string, int>("Status_Get_WhenCalled_ShouldReturnExpectedValue(Inactive,Inactive)", 1));
             try
             {
                 var data = new string[]{};
@@ -27,17 +33,23 @@ namespace ResearchWebStack.CommandLine
                 {
                     if (options.IsRunAsync == "True")
                     {
-                        data = CommandProcessor.CreateFiveCommandLineAsync(options);
+                        for (int i = 0; i < 5; i++)
+                        {
+                            data = CommandProcessor.CreateFiveCommandLineAsync(options, filterTuples[i]);
+                        }
                     }
                     else
                     {
-                        data = CommandProcessor.CreateFiveCommandLineNonAsync(options);
+                        for (int i = 0; i < 5; i++)
+                        {
+                            data = CommandProcessor.CreateFiveCommandLineNonAsync(options, filterTuples[i]);
+                        }
                     }
                 }, _ => Task.FromResult(1));
                 //Console.WriteLine($"retCode={retCode}");
-                LogHelper.LogModelWithStateData(null, data);
+                //LogHelper.LogModelWithStateData(null, data);
                 LogHelper.QInfo("Finish");
-                Console.WriteLine(data);
+                //Console.WriteLine(data);
                 Console.ReadKey();
             }
             catch (Exception e)
