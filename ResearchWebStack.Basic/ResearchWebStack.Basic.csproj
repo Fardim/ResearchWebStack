@@ -113,6 +113,7 @@
     <None Include="App.config" />
     <None Include="Auk.CsharpBootstrapper.Example.log4net.config" />
     <None Include="packages.config" />
+    <None Include="SampleTrxXMLTestLogFile.trx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ResearchWebStack.BusinessLayer\ResearchWebStack.BusinessLayer.csproj">

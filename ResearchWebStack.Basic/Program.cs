@@ -31,20 +31,26 @@ namespace ResearchWebStack.Basic
             Serializer ser = new Serializer();
             string path = string.Empty;
             string xmlInputData = string.Empty;
-            string xmlOutputData = string.Empty;
-            
-            // EXAMPLE 1
-            path = Directory.GetCurrentDirectory() + @"\SampleTrxXMLTestLogFile.trx";
+            //path = Directory.GetCurrentDirectory() + @"\SampleTrxXMLTestLogFile.trx";
+            path = @"SampleTrxXMLTestLogFile.trx";
+            //var dd = File.Exists(@"SampleTrxXMLTestLogFile.trx");
             xmlInputData = File.ReadAllText(path);
 
             TestRun testRun = ser.Deserialize<TestRun>(xmlInputData);
             LogHelper.QInfo("Successfully parsed data from xml file.");
 
 
+
+
+            #region EndPoints
+
             //UnitTestResults.UnitTestResultsAll(testRun.Results);
             UnitTestResults.GetFailedTest(testRun);
             //UnitTestResults.GetNonPassingTests(testRun);
             //UnitTestResults.GetInfo(testRun, "(null,00000000-0000-0000-0000-000000000000,null)", (int) FilterTypeEnum.FilterType.Contains);
+
+            #endregion
+
 
             Console.ReadKey();
         }
