@@ -5,10 +5,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C255A7E1-3613-4669-9FE3-41CEB3BEFB75}</ProjectGuid>
+    <ProjectGuid>{C8938982-4EA2-43D2-AC86-A32238ADE310}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ResearchWebStack.Basic</RootNamespace>
-    <AssemblyName>ResearchWebStack.Basic</AssemblyName>
+    <RootNamespace>ResearchWebStack.CommandLine</RootNamespace>
+    <AssemblyName>ResearchWebStack.CommandLine</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -108,6 +108,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandProcessor.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -117,18 +119,11 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="SampleTrxXMLTestLogFile.trx">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ResearchWebStack.BusinessLayer\ResearchWebStack.BusinessLayer.csproj">
       <Project>{d9d967e1-918f-4e6a-890e-d4f37254c0f5}</Project>
       <Name>ResearchWebStack.BusinessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ResearchWebStack.CommandLine\ResearchWebStack.CommandLine.csproj">
-      <Project>{c8938982-4ea2-43d2-ac86-a32238ade310}</Project>
-      <Name>ResearchWebStack.CommandLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\ResearchWebStack.DataModel\ResearchWebStack.DataModel.csproj">
       <Project>{e92e6053-de39-47d5-9bf3-7dce41f7b53e}</Project>

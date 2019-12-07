@@ -15,17 +15,17 @@ namespace ResearchWebStack.BusinessLayer
             
         }
 
-        public static void UnitTestResultsAll(IList<TestRunResultsUnitTestResult> results)
+        public static string[] UnitTestResultsAll(IList<TestRunResultsUnitTestResult> results)
         {
             var allResults = results.Select(re =>
             {
-                LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(re));
+                //LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(re));
                 return Newtonsoft.Json.JsonConvert.SerializeObject(re);
             }).ToArray();
-
+            return allResults;
         }
 
-        public static void GetFailedTest(TestRun testRun)
+        public static string[] GetFailedTest(TestRun testRun)
         {
             var failedTests = testRun.Results.Where(r => r.outcome.Equals("NotExecuted")).Select(r =>
             {
@@ -36,14 +36,15 @@ namespace ResearchWebStack.BusinessLayer
                     FullyQuantifiedName = new StringBuilder().Append(r.testId).Append(" - ").Append(r.testName).Append(" - ").Append(r.computerName),
                     Status = r.outcome
                 };
-                LogHelper.QWarn(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+                //LogHelper.QWarn(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
                 return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             }).ToArray();
+            return failedTests;
         }
 
-        public static void GetNonPassingTests(TestRun testRun)
+        public static string[] GetNonPassingTests(TestRun testRun)
         {
-            var failedTests = testRun.Results.Where(r => !r.outcome.Equals("Passed")).Select(r =>
+            var nonPassingTests = testRun.Results.Where(r => !r.outcome.Equals("Passed")).Select(r =>
             {
                 var obj = new
                 {
@@ -52,19 +53,30 @@ namespace ResearchWebStack.BusinessLayer
                     FullyQuantifiedName = new StringBuilder().Append(r.testId).Append(" - ").Append(r.testName).Append(" - ").Append(r.computerName),
                     Status = r.outcome
                 };
-                LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+                //LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
                 return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             }).ToArray();
+            return nonPassingTests;
         }
 
-        public static void GetInfo(TestRun testRun, string testName, int filterType)
+        public static List<List<string>> GetInfo(TestRun testRun, string testName= "OldValue_Set_WhenCalled_ShouldNotThrowException", int filterType = 0)
         {
-            Func<string, bool> filterExp = FilterExpression(testName, filterType);
-            var infos = testRun.TestDefinitions.Select(t => t.TestMethod.Where(m => filterExp(m.name)).Select(d =>
+            var infos = new List<List<string>>();
+            try
             {
-                LogHelper.QDebug(JsonConvert.SerializeObject(d));
-                return d;
-            }).ToArray()).ToArray();
+                Func<string, bool> filterExp = FilterExpression(testName, filterType);
+                infos = testRun.TestDefinitions.Select(t => t.TestMethod.Where(m => filterExp(m.name)).Select(d =>
+                {
+                    //LogHelper.QDebug(JsonConvert.SerializeObject(d));
+                    return JsonConvert.SerializeObject(d);
+                }).ToList()).Where(d=> d.Any()).ToList();
+                return infos;
+            }
+            catch (Exception e)
+            {
+                LogHelper.QError(e.Message);
+                return infos;
+            }
         }
 
         private static Func<string, bool> FilterExpression(string testName, int filterType)
@@ -77,9 +89,13 @@ namespace ResearchWebStack.BusinessLayer
             {
                 return x => x.StartsWith(testName);
             }
-            else
+            else if(filterType == (int)FilterTypeEnum.FilterType.EndsWith)
             {
                 return x => x.EndsWith(testName);
+            }
+            else
+            {
+                return x => false;
             }
         }
     }
