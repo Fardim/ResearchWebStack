@@ -59,9 +59,10 @@ namespace ResearchWebStack.BusinessLayer
             return nonPassingTests;
         }
 
-        public static List<List<string>> GetInfo(TestRun testRun, string testName= "OldValue_Set_WhenCalled_ShouldNotThrowException", int filterType = 0)
+        public static string[] GetInfo(TestRun testRun, string testName= "OldValue_Set_WhenCalled_ShouldNotThrowException", int filterType = 0)
         {
             var infos = new List<List<string>>();
+            var result = new string[] {};
             try
             {
                 Func<string, bool> filterExp = FilterExpression(testName, filterType);
@@ -70,12 +71,17 @@ namespace ResearchWebStack.BusinessLayer
                     //LogHelper.QDebug(JsonConvert.SerializeObject(d));
                     return JsonConvert.SerializeObject(d);
                 }).ToList()).Where(d=> d.Any()).ToList();
-                return infos;
+                List<string> list = new List<string>();
+                foreach (var list1 in infos)
+                {
+                    list.AddRange(list1);
+                }
+                return list.ToArray();
             }
             catch (Exception e)
             {
                 LogHelper.QError(e.Message);
-                return infos;
+                return result;
             }
         }
 

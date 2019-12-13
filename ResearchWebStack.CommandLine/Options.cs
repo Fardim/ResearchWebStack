@@ -24,5 +24,11 @@ namespace ResearchWebStack.CommandLine
 
         [Value(5)]
         public string Arguments { get; set; }
+
+        [Value(6)]
+        public string SearchBy { get; set; }
+
+        [Value(7)]
+        public string FilterType { get; set; }
     }
 }

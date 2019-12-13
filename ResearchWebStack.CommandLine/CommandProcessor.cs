@@ -15,25 +15,25 @@ namespace ResearchWebStack.CommandLine
         {
            
         }
-        public static string[] CreateFiveCommandLineAsync(Options options, Tuple<string, int> filterTuple)
+        public static string[] CreateFiveCommandLineAsync(Options options)
         {
-            var result = CreateCommandLineProcess(options, filterTuple);
+            var result = CreateCommandLineProcess(options);
             //Parallel.For(0, 5, i => {  });
             //await Task.Delay(10);
             return result;
         }
-        public static string[] CreateFiveCommandLineNonAsync(Options options, Tuple<string, int> filterTuple)
+        public static string[] CreateFiveCommandLineNonAsync(Options options)
         {
             //var allResults = results.Select(re =>
             //{
             //    LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(re));
             //    return Newtonsoft.Json.JsonConvert.SerializeObject(re);
             //}).ToArray();
-            var result = CreateCommandLineProcess(options, filterTuple);
+            var result = CreateCommandLineProcess(options);
             return result;
         }
 
-        public static  string[] CreateCommandLineProcess(Options options, Tuple<string, int> filterTuple)
+        public static  string[] CreateCommandLineProcess(Options options)
         {
             var result = new string[] { };
             try
@@ -51,13 +51,14 @@ namespace ResearchWebStack.CommandLine
                 }
                 else if (options.Arguments == "getInfo")
                 {
-                    var result1 = UnitTestResults.GetInfo(testRun, filterTuple.Item1, filterTuple.Item2);
-                    List<string> list = new List<string>();
-                    foreach (var list1 in result1)
-                    {
-                        list.AddRange(list1);
-                    }
-                    result = list.ToArray();
+                    var type = Convert.ToInt32(options.FilterType);
+                    result = UnitTestResults.GetInfo(testRun, options.SearchBy, type);
+                    //List<string> list = new List<string>();
+                    //foreach (var list1 in result1)
+                    //{
+                    //    list.AddRange(list1);
+                    //}
+                    //result = list.ToArray();
                     LogHelper.LogModelWithStateData(null, result);
                 }
                 else
