@@ -15,12 +15,19 @@ namespace ResearchWebStack.BusinessLayer
             
         }
 
-        public static string[] UnitTestResultsAll(IList<TestRunResultsUnitTestResult> results)
+        public static string[] UnitTestResultsAll(TestRun testRun)
         {
-            var allResults = results.Select(re =>
+            var allResults = testRun.Results.Select(r =>
             {
+                var obj = new
+                {
+                    TestName = r.testName,
+                    ClassName = testRun.TestDefinitions.FirstOrDefault(d => d.id == r.testId)?.TestMethod.FirstOrDefault()?.className,
+                    FullyQuantifiedName = r.testId + " - " + r.testName + " - " + r.computerName,
+                    Status = r.outcome
+                };
                 //LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(re));
-                return Newtonsoft.Json.JsonConvert.SerializeObject(re);
+                return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             }).ToArray();
             return allResults;
         }
@@ -33,10 +40,9 @@ namespace ResearchWebStack.BusinessLayer
                 {
                     TestName = r.testName,
                     ClassName = testRun.TestDefinitions.FirstOrDefault(d => d.id == r.testId)?.TestMethod.FirstOrDefault()?.className,
-                    FullyQuantifiedName = new StringBuilder().Append(r.testId).Append(" - ").Append(r.testName).Append(" - ").Append(r.computerName),
+                    FullyQuantifiedName = r.testId + " - " + r.testName + " - " + r.computerName,
                     Status = r.outcome
                 };
-                //LogHelper.QWarn(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
                 return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             }).ToArray();
             return failedTests;
@@ -50,38 +56,60 @@ namespace ResearchWebStack.BusinessLayer
                 {
                     TestName = r.testName,
                     ClassName = testRun.TestDefinitions.FirstOrDefault(d => d.id == r.testId)?.TestMethod.FirstOrDefault()?.className,
-                    FullyQuantifiedName = new StringBuilder().Append(r.testId).Append(" - ").Append(r.testName).Append(" - ").Append(r.computerName),
+                    FullyQuantifiedName = r.testId+" - "+r.testName+" - "+r.computerName,
                     Status = r.outcome
                 };
-                //LogHelper.QDebug(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
                 return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             }).ToArray();
             return nonPassingTests;
         }
 
+        public static string[] GetPassingTests(TestRun testRun)
+        {
+            var passingTests = testRun.Results.Where(r => r.outcome.Equals("Passed")).Select(r =>
+            {
+                var obj = new
+                {
+                    TestName = r.testName,
+                    ClassName = testRun.TestDefinitions.FirstOrDefault(d => d.id == r.testId)?.TestMethod.FirstOrDefault()?.className,
+                    FullyQuantifiedName = r.testId+" - "+r.testName+" - "+r.computerName,
+                    Status = r.outcome
+                };
+                return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            }).ToArray();
+            return passingTests;
+        }
+
         public static string[] GetInfo(TestRun testRun, string testName= "OldValue_Set_WhenCalled_ShouldNotThrowException", int filterType = 0)
         {
-            var infos = new List<List<string>>();
-            var result = new string[] {};
             try
             {
-                Func<string, bool> filterExp = FilterExpression(testName, filterType);
-                infos = testRun.TestDefinitions.Select(t => t.TestMethod.Where(m => filterExp(m.name)).Select(d =>
+                if (!String.IsNullOrEmpty(testName))
                 {
-                    //LogHelper.QDebug(JsonConvert.SerializeObject(d));
-                    return JsonConvert.SerializeObject(d);
-                }).ToList()).Where(d=> d.Any()).ToList();
-                List<string> list = new List<string>();
-                foreach (var list1 in infos)
-                {
-                    list.AddRange(list1);
+                    Func<string, bool> filterExp = FilterExpression(testName, filterType);
+                    var infos = testRun.Results.Where(r => filterExp(r.testName)).Select(r =>
+                    {
+                        var obj = new
+                        {
+                            TestName = r.testName,
+                            ClassName = testRun.TestDefinitions.FirstOrDefault(d => d.id == r.testId)?.TestMethod.FirstOrDefault()?.className,
+                            FullyQuantifiedName = r.testId + " - " + r.testName + " - " + r.computerName,
+                            Status = r.outcome
+                        };
+                        return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    }).ToArray();
+                    return infos;
                 }
-                return list.ToArray();
+                else
+                {
+                    return UnitTestResultsAll(testRun);
+                }
+                { { } }
             }
             catch (Exception e)
             {
                 LogHelper.QError(e.Message);
-                return result;
+                return new string[] { };
             }
         }
 

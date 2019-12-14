@@ -19,7 +19,10 @@ namespace ResearchWebStack.Server
         string[] GetNonPassingTest();
 
         [OperationContract]
-        string[] GetInfo();
+        string[] GetPassingTest();
+
+        [OperationContract]
+        string[] GetInfo(string testName, int filterType);
 
         [OperationContract]
         string[] UnitTestResultsAll();

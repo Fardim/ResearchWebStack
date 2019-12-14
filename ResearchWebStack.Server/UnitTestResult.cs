@@ -25,15 +25,21 @@ namespace ResearchWebStack.Server
             return result;
         }
 
-        public string[] GetInfo()
+        public string[] GetPassingTest()
         {
-            var result = UnitTestResults.GetInfo(testRun, "OnDeactivated_When_Call_Result");
+            var result = UnitTestResults.GetPassingTests(testRun);
+            return result;
+        }
+
+        public string[] GetInfo(string testName = "OldValue_Set_WhenCalled_ShouldNotThrowException", int filterType = 0)
+        {
+            var result = UnitTestResults.GetInfo(testRun, testName, filterType);
             return result;
         }
 
         public string[] UnitTestResultsAll()
         {
-            var result = UnitTestResults.UnitTestResultsAll(testRun.Results);
+            var result = UnitTestResults.UnitTestResultsAll(testRun);
             return result;
         }
     }

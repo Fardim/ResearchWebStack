@@ -85,12 +85,6 @@ namespace ResearchWebStack.CommandLine
 
            
         }
-
-        //static async Task<int> RunAndReturnExitCodeAsync(Options options)
-        //{
-        //    LogHelper.QInfo(options.ProcessName, options.ProcessPath);
-        //    await Task.Delay(20); //simulate async method
-        //    return 0;
-        //}
+        
     }
 }

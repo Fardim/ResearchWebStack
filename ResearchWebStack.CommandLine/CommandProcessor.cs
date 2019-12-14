@@ -49,21 +49,20 @@ namespace ResearchWebStack.CommandLine
                     result = UnitTestResults.GetNonPassingTests(testRun);
                     LogHelper.LogModelWithStateData(null, result);
                 }
+                else if (options.Arguments == "getPassingTest")
+                {
+                    result = UnitTestResults.GetPassingTests(testRun);
+                    LogHelper.LogModelWithStateData(null, result);
+                }
                 else if (options.Arguments == "getInfo")
                 {
                     var type = Convert.ToInt32(options.FilterType);
                     result = UnitTestResults.GetInfo(testRun, options.SearchBy, type);
-                    //List<string> list = new List<string>();
-                    //foreach (var list1 in result1)
-                    //{
-                    //    list.AddRange(list1);
-                    //}
-                    //result = list.ToArray();
                     LogHelper.LogModelWithStateData(null, result);
                 }
                 else
                 {
-                    result = UnitTestResults.UnitTestResultsAll(testRun.Results);
+                    result = UnitTestResults.UnitTestResultsAll(testRun);
                     LogHelper.LogModelWithStateData(null, result);
                 }
 
