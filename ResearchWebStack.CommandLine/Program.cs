@@ -25,65 +25,34 @@ namespace ResearchWebStack.CommandLine
             {
                 result.MapResult(async options =>
                 {
-                    if (options.IsRunAsync == "True")
+                    CommandProcessor cmp = new CommandProcessor(null);
+                    switch (options.ProcessName)
                     {
-                        for (int i = 0; i < 5; i++)
-                        {
-                            data = CommandProcessor.CreateFiveCommandLineAsync(options);
-                        }
+                        case "runNodeJs":
+                            cmp.CurrentStrategy = new NodeStrategy();
+                            break;
+                        case "runPython":
+                            cmp.CurrentStrategy = new PythonStrategy();
+                            break;
+                        case "cmd":
+                            cmp.CurrentStrategy = new CMDStrategy();
+                            break;
+                        case "ps":
+                            cmp.CurrentStrategy = new PSStrategy();
+                            break;
+                        case "UnitTests":
+                            cmp.CurrentStrategy = new UnitTestStrategy();
+                            break;
+                        case "registry":
+                            cmp.CurrentStrategy = new RegistryStrategy();
+                            break;
                     }
-                    else
-                    {
-                        for (int i = 0; i < 5; i++)
-                        {
-                            data = CommandProcessor.CreateFiveCommandLineNonAsync(options);
-                        }
-                    }
+                    data = cmp.GetCommandResult(options);
+                    Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(data));
                 }, _ => Task.FromResult(1));
 
             }
-            LogHelper.QInfo("Finish");
-            Console.ReadKey();
 
-            //List<Tuple<string, int>> filterTuples = new List<Tuple<string, int>>();
-            //filterTuples.Add(new Tuple<string, int>("FireIfDeactivating_When_Call_Result(False,0,Inactive,False,0,null,Inactive,null)", 0));
-            //filterTuples.Add(new Tuple<string, int>("CreateParameter_When_Call_Result(False,0,null,null)", 1));
-            //filterTuples.Add(new Tuple<string, int>("Scope_Get_WhenCalled_ShouldReturnExpectedValue(User,User)", 2));
-            //filterTuples.Add(new Tuple<string, int>("CryptographyService_Set_WhenCalled_ShouldNotThrowException", 0));
-            //filterTuples.Add(new Tuple<string, int>("Status_Get_WhenCalled_ShouldReturnExpectedValue(Inactive,Inactive)", 1));
-            //try
-            //{
-            //    var data = new string[]{};
-            //    var result = Parser.Default.ParseArguments<Options>(args);
-            //    var retCode = result.MapResult(async options =>
-            //    {
-            //        if (options.IsRunAsync == "True")
-            //        {
-            //            for (int i = 0; i < 5; i++)
-            //            {
-            //                data = CommandProcessor.CreateFiveCommandLineAsync(options, filterTuples[i]);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            for (int i = 0; i < 5; i++)
-            //            {
-            //                data = CommandProcessor.CreateFiveCommandLineNonAsync(options, filterTuples[i]);
-            //            }
-            //        }
-            //    }, _ => Task.FromResult(1));
-            //    LogHelper.QInfo("Finish");
-            //    Console.ReadKey();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //}
-            //var retCode = result.MapResult(async options => await RunAndReturnExitCodeAsync(options), _ => Task.FromResult(1));
-            
-
-
-           
         }
         
     }

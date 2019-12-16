@@ -16,13 +16,9 @@ namespace ResearchWebStack.DataModel
             Serializer ser = new Serializer();
             string path = string.Empty;
             string xmlInputData = string.Empty;
-            //path = Directory.GetCurrentDirectory() + @"\SampleTrxXMLTestLogFile.trx";
             path = @"SampleTrxXMLTestLogFile.trx";
-            //var dd = File.Exists(@"SampleTrxXMLTestLogFile.trx");
             xmlInputData = File.ReadAllText(path);
-
             TestRun testRun = ser.Deserialize<TestRun>(xmlInputData);
-            //LogHelper.QInfo("Successfully parsed data from xml file.");
             return testRun;
         }
     }

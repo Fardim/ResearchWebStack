@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Auk.CsharpBootstrapper.Helper;
@@ -104,12 +105,34 @@ namespace ResearchWebStack.BusinessLayer
                 {
                     return UnitTestResultsAll(testRun);
                 }
-                { { } }
             }
             catch (Exception e)
             {
                 LogHelper.QError(e.Message);
                 return new string[] { };
+            }
+        }
+
+        public static string CommandProc(string args)
+        {
+            const string fileName = "ResearchWebStack.CommandLine.exe";
+            try
+            {
+                Process cmd = new Process();
+                cmd.StartInfo.FileName = fileName;
+                cmd.StartInfo.Arguments = args;
+                cmd.StartInfo.RedirectStandardOutput = true;
+                cmd.StartInfo.UseShellExecute = false;
+                cmd.Start();
+
+                var item = cmd.StandardOutput.ReadToEnd();
+                cmd.WaitForExit();
+                return item;
+            }
+            catch (Exception e)
+            {
+                LogHelper.QError(e.Message);
+                return "";
             }
         }
 

@@ -45,26 +45,22 @@ namespace ResearchWebStack.Basic
                     LogHelper.QFatal(e.Message);
                 }
             }
-
-
-
-
-
-            //var testRun = ParseData.GetDataParsed();
-
+            
             #region EndPoints
 
             //var result = UnitTestResults.UnitTestResultsAll(testRun.Results);
             //var result = UnitTestResults.GetFailedTest(testRun);
             //var result = UnitTestResults.GetNonPassingTests(testRun);
             //var result = UnitTestResults.GetInfo(testRun, "(null,00000000-0000-0000-0000-000000000000,null)", (int)FilterTypeEnum.FilterType.Contains);
+            //var result = UnitTestResults.CommandProc("fardim here true false true getInfo OldValue_Set_WhenCalled_ShouldNotThrowException 0");
             //LogHelper.LogModelWithStateData(null, result);
+            //Console.ReadLine();
 
             #endregion
 
 
             #region CommandLine commands
-
+            
             //Process cmd = new Process();
             //cmd.StartInfo.FileName = "cmd.exe";
             //cmd.StartInfo.RedirectStandardInput = true;
@@ -77,12 +73,14 @@ namespace ResearchWebStack.Basic
             //cmd.StandardInput.Flush();
             //cmd.StandardInput.Close();
             //cmd.WaitForExit();
-            //Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+            //var item = cmd.StandardOutput.ReadToEnd();
+            //Console.WriteLine(item);
+
 
             #endregion
 
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

@@ -26,5 +26,8 @@ namespace ResearchWebStack.Server
 
         [OperationContract]
         string[] UnitTestResultsAll();
+
+        [OperationContract]
+        string CommandProcessor(string args);
     }
 }

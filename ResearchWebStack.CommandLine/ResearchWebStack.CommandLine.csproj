@@ -108,10 +108,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMDStrategy.cs" />
     <Compile Include="CommandProcessor.cs" />
+    <Compile Include="IStrategy.cs" />
+    <Compile Include="NodeStrategy.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PSStrategy.cs" />
+    <Compile Include="PythonStrategy.cs" />
+    <Compile Include="RegistryStrategy.cs" />
+    <Compile Include="UnitTestStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
